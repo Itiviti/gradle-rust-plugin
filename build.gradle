@@ -1,0 +1,49 @@
+buildscript {
+    dependencies {
+    }
+}
+plugins {
+    id 'groovy'
+    id 'java'
+    id 'com.jfrog.bintray' version '1.8.4'
+    id 'net.researchgate.release' version '2.6.0'
+    id 'de.undercouch.download' version '3.4.3'
+    id 'nu.studer.plugindev' version '1.0.12'
+}
+
+description 'Gradle plugin for LicenseFinder.'
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.spockframework:spock-core:1.2-groovy-2.5'
+    compile gradleApi()
+    compile 'net.java.dev.jna:jna:4.2.2'
+    compile 'net.java.dev.jna:jna-platform:4.2.2'
+    compile 'com.google.guava:guava:27.0.1-jre'
+}
+
+bintray {
+    // to remove when upgraded plugindev to 1.0.4
+    user project.properties.bintrayUser
+    key project.properties.bintrayApiKey
+    pkg.repo = 'gradle-plugins'
+    pkg.userOrg = 'ullink'
+    pkg.version.gpg.sign = true
+}
+
+plugindev {
+    pluginId 'com.itiviti.rust'
+    pluginName 'com.ullink.gradle:gradle-rust-plugin'
+    pluginImplementationClass 'com.itiviti.gradle.RustPlugin.RustPlugin'
+    pluginDescription project.description
+    pluginLicenses 'Apache-2.0'
+    pluginTags 'gradle', 'plugin', 'Rust', 'carg', 'build'
+    authorId 'josselinchevalay'
+    authorName 'Josselin Chevalay'
+    authorEmail 'josselin54.chevalay@gmail.com'
+    projectUrl "https://github.com/Itiviti/${project.name}"
+    projectInceptionYear '2021'
+    done()
+}
+
+afterReleaseBuild.dependsOn bintrayUpload
